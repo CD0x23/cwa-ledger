@@ -72,7 +72,7 @@ LDLIBS += -lm -lgcc -lc
 all: default
 
 load: all
-	python -m ledgerblue.loadApp $(APP_LOAD_PARAMS)
+	python -m ledgerblue.loadApp --apdu $(APP_LOAD_PARAMS)
 
 delete:
 	python -m ledgerblue.deleteApp $(COMMON_DELETE_PARAMS)
