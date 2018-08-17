@@ -72,7 +72,7 @@ LDLIBS += -lm -lgcc -lc
 all: default
 
 load: all
-	python -m ledgerblue.loadApp --apdu $(APP_LOAD_PARAMS)
+	python -m ledgerblue.loadApp --apdu $(APP_LOAD_PARAMS) --apilevel 4 --dataSize `cat debug/app.map |grep _nvram_data_size | tr -s ' ' | cut -f2 -d' '`
 
 delete:
 	python -m ledgerblue.deleteApp $(COMMON_DELETE_PARAMS)

@@ -123,7 +123,7 @@ log = $(if $(strip $(VERBOSE)),$1,@$1)
 default: prepare bin/$(PROG)
 
 load: 
-	python -m ledgerblue.loadApp --apdu --fileName bin/$(PROG).hex --appName $(APPNAME)
+	python -m ledgerblue.loadApp --apdu --fileName bin/$(PROG).hex --appName $(APPNAME) --apilevel 4 --dataSize `cat debug/app.map |grep _nvram_data_size | tr -s ' ' | cut -f2 -d' '`
 
 delete:
 	python -m ledgerblue.deleteApp --appName $(APPNAME)
