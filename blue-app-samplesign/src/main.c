@@ -62,7 +62,16 @@ static const unsigned char N_initialized;
 static char lineBuffer[50];
 static cx_sha256_t hash;
 
-#ifdef TARGET_BLUE
+#define BAGL_FONT_OPEN_SANS_LIGHT_16_22PX_AVG_WIDTH 10
+#define BAGL_FONT_OPEN_SANS_REGULAR_10_13PX_AVG_WIDTH 8
+#define MAX_CHAR_PER_LINE 25
+
+#define COLOR_BG_1 0xF9F9F9
+#define COLOR_APP 0x0ebdcf
+#define COLOR_APP_LIGHT 0x87dee6
+
+#if defined(TARGET_BLUE)
+
 
 // UI to approve or deny the signature proposal
 static const bagl_element_t const bagl_ui_approval_blue[] = {
@@ -77,11 +86,12 @@ static const bagl_element_t const bagl_ui_approval_blue[] = {
     //     out,
     //     over,
     // },
+    {{BAGL_RECTANGLE , 0x00, 0, 68, 320, 413, 0, 0, BAGL_FILL, COLOR_BG_1, 0x000000, 0 , 0 }, NULL, 0, 0, 0, NULL, NULL, NULL },
     {
-        {BAGL_BUTTON | BAGL_FLAG_TOUCHABLE, 0x00, 190, 215, 120, 40, 0, 6,
+        {BAGL_BUTTON | BAGL_FLAG_TOUCHABLE, 0x00, 150, 215, 120, 40, 0, 6,
          BAGL_FILL, 0x41ccb4, 0xF9F9F9, BAGL_FONT_OPEN_SANS_LIGHT_14px |
          BAGL_FONT_ALIGNMENT_CENTER | BAGL_FONT_ALIGNMENT_MIDDLE, 0},
-        "Deny",
+        "Reddet",
         0,
         0x37ae99,
         0xF9F9F9,
@@ -90,10 +100,10 @@ static const bagl_element_t const bagl_ui_approval_blue[] = {
         NULL,
     },
     {
-        {BAGL_BUTTON | BAGL_FLAG_TOUCHABLE, 0x00, 190, 265, 120, 40, 0, 6,
+        {BAGL_BUTTON | BAGL_FLAG_TOUCHABLE, 0x00, 60, 215, 120, 40, 0, 6,
          BAGL_FILL, 0x41ccb4, 0xF9F9F9, BAGL_FONT_OPEN_SANS_LIGHT_14px |
          BAGL_FONT_ALIGNMENT_CENTER | BAGL_FONT_ALIGNMENT_MIDDLE, 0},
-        "Approve",
+        "Onayla",
         0,
         0x37ae99,
         0xF9F9F9,
@@ -101,7 +111,18 @@ static const bagl_element_t const bagl_ui_approval_blue[] = {
         NULL,
         NULL,
     },
-};
+    {
+       {BAGL_LABELINE , 0x00, 0, 308, 320, 30, 0, 0, BAGL_FILL, 0x000000,
+       COLOR_BG_1, BAGL_FONT_OPEN_SANS_REGULAR_10_13PX|BAGL_FONT_ALIGNMENT_CENTER, 0 },
+       "Transaction details will be here", 
+       0,
+       0,
+       0,
+       NULL,
+       NULL,
+       NULL},
+
+    };
 
 static unsigned int
 bagl_ui_approval_blue_button(unsigned int button_mask,
@@ -147,7 +168,7 @@ static const bagl_element_t bagl_ui_idle_blue[] = {
     {
         {BAGL_LABEL, 0x00, 20, 0, 320, 60, 0, 0, BAGL_FILL, 0xFFFFFF, 0x1d2028,
          BAGL_FONT_OPEN_SANS_LIGHT_14px | BAGL_FONT_ALIGNMENT_MIDDLE, 0},
-        "Sample Sign",
+        "Imza uygulamasi",
         0,
         0,
         0,
@@ -159,7 +180,7 @@ static const bagl_element_t bagl_ui_idle_blue[] = {
         {BAGL_BUTTON | BAGL_FLAG_TOUCHABLE, 0x00, 190, 215, 120, 40, 0, 6,
          BAGL_FILL, 0x41ccb4, 0xF9F9F9, BAGL_FONT_OPEN_SANS_LIGHT_14px |
          BAGL_FONT_ALIGNMENT_CENTER | BAGL_FONT_ALIGNMENT_MIDDLE, 0},
-        "Exit",
+        "Cikis",
         0,
         0x37ae99,
         0xF9F9F9,
@@ -211,7 +232,7 @@ static const bagl_element_t bagl_ui_idle_nanos[] = {
     {
         {BAGL_LABELINE, 0x02, 0, 12, 128, 11, 0, 0, 0, 0xFFFFFF, 0x000000,
          BAGL_FONT_OPEN_SANS_REGULAR_11px | BAGL_FONT_ALIGNMENT_CENTER, 0},
-        "Waiting for message",
+        "Islem bekleniyor",
         0,
         0,
         0,
@@ -271,7 +292,7 @@ static const bagl_element_t bagl_ui_approval_nanos[] = {
     {
         {BAGL_LABELINE, 0x02, 0, 12, 128, 11, 0, 0, 0, 0xFFFFFF, 0x000000,
          BAGL_FONT_OPEN_SANS_REGULAR_11px | BAGL_FONT_ALIGNMENT_CENTER, 0},
-        "Sign message",
+        "Imzala",
         0,
         0,
         0,
@@ -344,7 +365,7 @@ static const bagl_element_t bagl_ui_text_review_nanos[] = {
     {
         {BAGL_LABELINE, 0x02, 0, 12, 128, 11, 0, 0, 0, 0xFFFFFF, 0x000000,
          BAGL_FONT_OPEN_SANS_REGULAR_11px | BAGL_FONT_ALIGNMENT_CENTER, 0},
-        "Verify text",
+        "Mesaji onayla",
         0,
         0,
         0,
