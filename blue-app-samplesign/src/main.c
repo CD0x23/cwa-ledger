@@ -88,7 +88,7 @@ static const bagl_element_t const bagl_ui_approval_blue[] = {
     // },
     {{BAGL_RECTANGLE , 0x00, 0, 68, 320, 413, 0, 0, BAGL_FILL, COLOR_BG_1, 0x000000, 0 , 0 }, NULL, 0, 0, 0, NULL, NULL, NULL },
     {
-        {BAGL_BUTTON | BAGL_FLAG_TOUCHABLE, 0x00, 150, 215, 120, 40, 0, 6,
+        {BAGL_BUTTON | BAGL_FLAG_TOUCHABLE, 0x00, 30, 100, 120, 40, 0, 6,
          BAGL_FILL, 0x41ccb4, 0xF9F9F9, BAGL_FONT_OPEN_SANS_LIGHT_14px |
          BAGL_FONT_ALIGNMENT_CENTER | BAGL_FONT_ALIGNMENT_MIDDLE, 0},
         "Reddet",
@@ -100,7 +100,7 @@ static const bagl_element_t const bagl_ui_approval_blue[] = {
         NULL,
     },
     {
-        {BAGL_BUTTON | BAGL_FLAG_TOUCHABLE, 0x00, 60, 215, 120, 40, 0, 6,
+        {BAGL_BUTTON | BAGL_FLAG_TOUCHABLE, 0x00, 180, 100, 120, 40, 0, 6,
          BAGL_FILL, 0x41ccb4, 0xF9F9F9, BAGL_FONT_OPEN_SANS_LIGHT_14px |
          BAGL_FONT_ALIGNMENT_CENTER | BAGL_FONT_ALIGNMENT_MIDDLE, 0},
         "Onayla",
@@ -112,18 +112,63 @@ static const bagl_element_t const bagl_ui_approval_blue[] = {
         NULL,
     },
     {
-       {BAGL_LABELINE , 0x00, 0, 308, 320, 30, 0, 0, BAGL_FILL, 0x000000,
-       COLOR_BG_1, BAGL_FONT_OPEN_SANS_REGULAR_10_13PX|BAGL_FONT_ALIGNMENT_CENTER, 0 },
-       "Transaction details will be here", 
+       // 4th property indicates y axis
+       // TX details have 25px in-between each element
+       {BAGL_LABELINE , 0x00, 0, 200, 200, 30, 0, 0, BAGL_FILL, 0x000000,
+       COLOR_BG_1, BAGL_FONT_OPEN_SANS_REGULAR_10_13PX|BAGL_FONT_ALIGNMENT_LEFT, 0 },
+   	    "  Currency:",
        0,
        0,
        0,
        NULL,
        NULL,
-       NULL},
-
+       NULL,
+    },
+    {
+       {BAGL_LABELINE , 0x00, 0, 225, 200, 30, 0, 0, BAGL_FILL, 0x000000,
+       COLOR_BG_1, BAGL_FONT_OPEN_SANS_REGULAR_10_13PX|BAGL_FONT_ALIGNMENT_LEFT, 0 },
+       "  From:",
+       0,
+       0,
+       0,
+       NULL,
+       NULL,
+       NULL,
+    },
+    {
+       {BAGL_LABELINE , 0x00, 0, 250, 200, 30, 0, 0, BAGL_FILL, 0x000000,
+       COLOR_BG_1, BAGL_FONT_OPEN_SANS_REGULAR_10_13PX|BAGL_FONT_ALIGNMENT_LEFT, 0 },
+       "  To:",
+       0,
+       0,
+       0,
+       NULL,
+       NULL,
+       NULL,
+    },
+    {
+       {BAGL_LABELINE , 0x00, 0, 275, 200, 30, 0, 0, BAGL_FILL, 0x000000,
+       COLOR_BG_1, BAGL_FONT_OPEN_SANS_REGULAR_10_13PX|BAGL_FONT_ALIGNMENT_LEFT, 0 },
+       "  Amount:",
+       0,
+       0,
+       0,
+       NULL,
+       NULL,
+       NULL,
+    },
+    {
+       {BAGL_LABELINE , 0x00, 0, 300, 200, 30, 0, 0, BAGL_FILL, 0x000000,
+       COLOR_BG_1, BAGL_FONT_OPEN_SANS_REGULAR_10_13PX|BAGL_FONT_ALIGNMENT_LEFT, 0 },
+       "  Timestamp:",
+       0,
+       0,
+       0,
+       NULL,
+       NULL,
+       NULL,
+    }
     };
-
 static unsigned int
 bagl_ui_approval_blue_button(unsigned int button_mask,
                              unsigned int button_mask_counter) {
@@ -176,8 +221,21 @@ static const bagl_element_t bagl_ui_idle_blue[] = {
         NULL,
         NULL,
     },
+    
+   {
+      
+       {BAGL_LABELINE , 0x00, 100, 150, 150, 30, 0, 0, BAGL_FILL, 0x000000,
+       COLOR_BG_1, BAGL_FONT_OPEN_SANS_REGULAR_10_13PX|BAGL_FONT_ALIGNMENT_MIDDLE, 0 },
+            "Veri bekleniyor...",
+       0,
+       0,
+       0,
+       NULL,
+       NULL,
+       NULL,
+    },
     {
-        {BAGL_BUTTON | BAGL_FLAG_TOUCHABLE, 0x00, 190, 215, 120, 40, 0, 6,
+        {BAGL_BUTTON | BAGL_FLAG_TOUCHABLE, 0x00, 100, 215, 120, 40, 0, 6,
          BAGL_FILL, 0x41ccb4, 0xF9F9F9, BAGL_FONT_OPEN_SANS_LIGHT_14px |
          BAGL_FONT_ALIGNMENT_CENTER | BAGL_FONT_ALIGNMENT_MIDDLE, 0},
         "Cikis",
