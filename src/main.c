@@ -64,7 +64,7 @@ static const unsigned char N_initialized;
 static char lineBuffer[50];
 static cx_sha256_t hash;
 
-static char amount[5];
+static char amount[1024];
 
 
 #define BAGL_FONT_OPEN_SANS_LIGHT_16_22PX_AVG_WIDTH 10
@@ -600,7 +600,7 @@ static void sample_main(void) {
                 
 		case INS_DRAW_AMOUNT: {
 		    G_io_apdu_buffer[5 + G_io_apdu_buffer[4]] = '\0';
-		    os_memmove(&amount, G_io_apdu_buffer + 5, G_io_apdu_buffer[4]);
+		    os_memmove(&amount, G_io_apdu_buffer + 5, G_io_apdu_buffer[4] + 1);
 		
 		    THROW(0x9000);
 		} break;

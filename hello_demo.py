@@ -19,7 +19,9 @@ from ledgerblue.comm import getDongle
 from ledgerblue.commException import CommException
 from secp256k1 import PublicKey
 
+
 textToSign = "hello"
+amount = "10.3678542"
 
 dongle = getDongle(True)
 publicKey = dongle.exchange(bytes("8004000000".decode('hex')))
@@ -27,12 +29,12 @@ print "publicKey " + str(publicKey).encode('hex')
 try:
     offset = 0
     instruction = "10"
-    while offset <> len(textToSign):
-        if (len(textToSign) - offset) > 255:
-            chunk = textToSign[offset : offset + 255] 
+    while offset <> len(amount):
+        if (len(amount) - offset) > 255:
+            chunk = amount[offset : offset + 255] 
         else:
-            chunk = textToSign[offset:]
-        if (offset + len(chunk)) == len(textToSign):
+            chunk = amount[offset:]
+        if (offset + len(chunk)) == len(amount):
             p1 = 0x80
         else:
             p1 = 0x00
