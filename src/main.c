@@ -53,8 +53,9 @@ static void ui_approval(void);
 #define INS_GET_PUBLIC_KEY 0x04
 #define P1_LAST 0x80
 #define P1_MORE 0x00
-#define INS_GET_AMOUNT 0x10
-#define INS_DRAW_FROM_ADDRESS 0x20
+
+#define INS_SET_AMOUNT   0x10
+#define INS_SET_CURRENCY 0x11
 
 // private key in flash. const and N_ variable name are mandatory here
 static const cx_ecfp_private_key_t N_privateKey;
@@ -65,6 +66,7 @@ static char lineBuffer[50];
 static cx_sha256_t hash;
 
 static char amount[1024];
+static char currency[1024];
 
 
 #define BAGL_FONT_OPEN_SANS_LIGHT_16_22PX_AVG_WIDTH 10
@@ -165,7 +167,7 @@ static const bagl_element_t const bagl_ui_approval_blue[] = {
     {
        {BAGL_LABELINE , 0x00, 0, 300, 200, 30, 0, 0, BAGL_FILL, 0x000000,
        COLOR_BG_1, BAGL_FONT_OPEN_SANS_REGULAR_10_13PX|BAGL_FONT_ALIGNMENT_LEFT, 0 },
-       G_io_apdu_buffer + 5,
+       &currency,
        0,
        0,
        0,
@@ -598,9 +600,16 @@ static void sample_main(void) {
 
                 switch (G_io_apdu_buffer[1]) {
                 
-                case INS_GET_AMOUNT: {
+                case INS_SET_AMOUNT: {
                     G_io_apdu_buffer[5 + G_io_apdu_buffer[4]] = '\0';
                     os_memmove(&amount, G_io_apdu_buffer + 5, G_io_apdu_buffer[4] + 1);
+                
+                    THROW(0x9000);
+                } break;
+                
+                case INS_SET_CURRENCY: {
+                    G_io_apdu_buffer[5 + G_io_apdu_buffer[4]] = '\0';
+                    os_memmove(&currency, G_io_apdu_buffer + 5, G_io_apdu_buffer[4] + 1);
                 
                     THROW(0x9000);
                 } break;
@@ -623,10 +632,6 @@ static void sample_main(void) {
                     ui_text();
 
                     flags |= IO_ASYNCH_REPLY;
-                } break;
-                case INS_DRAW_FROM_ADDRESS: {
-                ui_approval();
-                
                 } break;
 
                 case INS_GET_PUBLIC_KEY: {
