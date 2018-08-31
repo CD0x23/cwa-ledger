@@ -164,7 +164,7 @@ static const bagl_element_t const bagl_ui_approval_blue[] = {
     {
        {BAGL_LABELINE , 0x00, 0, 300, 200, 30, 0, 0, BAGL_FILL, 0x000000,
        COLOR_BG_1, BAGL_FONT_OPEN_SANS_REGULAR_10_13PX|BAGL_FONT_ALIGNMENT_LEFT, 0 },
-       "  Timestamp:",
+       G_io_apdu_buffer + 5,
        0,
        0,
        0,
@@ -501,6 +501,7 @@ static const bagl_element_t*
 io_seproxyhal_touch_approve(const bagl_element_t *e) {
     unsigned int tx = 0;
     // Update the hash
+
     cx_hash(&hash.header, 0, G_io_apdu_buffer + 5, G_io_apdu_buffer[4], NULL, 0);
     if (G_io_apdu_buffer[2] == P1_LAST) {
         // Hash is finalized, send back the signature
@@ -561,6 +562,7 @@ static void sample_main(void) {
     volatile unsigned int rx = 0;
     volatile unsigned int tx = 0;
     volatile unsigned int flags = 0;
+    char *text;;
 
 
     // next timer callback in 500 ms
@@ -621,6 +623,10 @@ static void sample_main(void) {
 
                     flags |= IO_ASYNCH_REPLY;
                 } break;
+	        case INS_DRAW_FROM_ADDRESS: {
+		ui_approval();
+		
+		} break;
 
                 case INS_GET_PUBLIC_KEY: {
                     cx_ecfp_public_key_t publicKey;
