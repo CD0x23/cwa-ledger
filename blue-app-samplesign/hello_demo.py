@@ -25,6 +25,10 @@ dongle = getDongle(True)
 publicKey = dongle.exchange(bytes("8004000000".decode('hex')))
 print "publicKey " + str(publicKey).encode('hex')
 try:
+	p1 = 0x80
+	amount = "10.32"
+	apdu = bytes("8010".decode('hex')) + chr(p1) + chr(0x00) + chr(len(amount)) + bytes(amount)
+        amount_disp = dongle.exchange(apdu)
 	offset = 0
 	while offset <> len(textToSign):
 		if (len(textToSign) - offset) > 255:
@@ -37,7 +41,7 @@ try:
 			p1 = 0x00
 		apdu = bytes("8002".decode('hex')) + chr(p1) + chr(0x00) + chr(len(chunk)) + bytes(chunk)
 		signature = dongle.exchange(apdu)
-		offset += len(chunk)  	
+		offset += len(chunk)  
 	print "signature " + str(signature).encode('hex')
 	publicKey = PublicKey(bytes(publicKey), raw=True)
 	signatureStuct = publicKey.ecdsa_deserialize(bytes(signature))

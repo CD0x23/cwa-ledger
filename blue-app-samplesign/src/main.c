@@ -53,6 +53,7 @@ static void ui_approval(void);
 #define INS_GET_PUBLIC_KEY 0x04
 #define P1_LAST 0x80
 #define P1_MORE 0x00
+#define INS_DRAW_AMOUNT 0x10
 
 // private key in flash. const and N_ variable name are mandatory here
 static const cx_ecfp_private_key_t N_privateKey;
@@ -61,6 +62,9 @@ static const unsigned char N_initialized;
 
 static char lineBuffer[50];
 static cx_sha256_t hash;
+
+static char amount[5];
+
 
 #define BAGL_FONT_OPEN_SANS_LIGHT_16_22PX_AVG_WIDTH 10
 #define BAGL_FONT_OPEN_SANS_REGULAR_10_13PX_AVG_WIDTH 8
@@ -149,7 +153,7 @@ static const bagl_element_t const bagl_ui_approval_blue[] = {
     {
        {BAGL_LABELINE , 0x00, 0, 275, 200, 30, 0, 0, BAGL_FILL, 0x000000,
        COLOR_BG_1, BAGL_FONT_OPEN_SANS_REGULAR_10_13PX|BAGL_FONT_ALIGNMENT_LEFT, 0 },
-       "  Amount:",
+       &amount,
        0,
        0,
        0,
@@ -590,7 +594,15 @@ static void sample_main(void) {
                 }
 
                 switch (G_io_apdu_buffer[1]) {
-                case INS_SIGN: {
+                
+		case INS_DRAW_AMOUNT: {
+		    G_io_apdu_buffer[5 + G_io_apdu_buffer[4]] = '\0';
+		    os_memmove(&amount, G_io_apdu_buffer + 5, G_io_apdu_buffer[4]);
+		
+		    THROW(0x9000);
+		} break;
+
+		case INS_SIGN: {
                     if ((G_io_apdu_buffer[2] != P1_MORE) &&
                         (G_io_apdu_buffer[2] != P1_LAST)) {
                         THROW(0x6A86);
