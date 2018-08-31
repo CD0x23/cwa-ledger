@@ -53,7 +53,7 @@ static void ui_approval(void);
 #define INS_GET_PUBLIC_KEY 0x04
 #define P1_LAST 0x80
 #define P1_MORE 0x00
-#define INS_DRAW_AMOUNT 0x10
+#define INS_GET_AMOUNT 0x10
 #define INS_DRAW_FROM_ADDRESS 0x20
 
 // private key in flash. const and N_ variable name are mandatory here
@@ -121,7 +121,7 @@ static const bagl_element_t const bagl_ui_approval_blue[] = {
        // TX details have 25px in-between each element
        {BAGL_LABELINE , 0x00, 0, 200, 200, 30, 0, 0, BAGL_FILL, 0x000000,
        COLOR_BG_1, BAGL_FONT_OPEN_SANS_REGULAR_10_13PX|BAGL_FONT_ALIGNMENT_LEFT, 0 },
-   	    "  Currency:",
+            "  Currency:",
        0,
        0,
        0,
@@ -598,14 +598,14 @@ static void sample_main(void) {
 
                 switch (G_io_apdu_buffer[1]) {
                 
-		case INS_DRAW_AMOUNT: {
-		    G_io_apdu_buffer[5 + G_io_apdu_buffer[4]] = '\0';
-		    os_memmove(&amount, G_io_apdu_buffer + 5, G_io_apdu_buffer[4] + 1);
-		
-		    THROW(0x9000);
-		} break;
+                case INS_GET_AMOUNT: {
+                    G_io_apdu_buffer[5 + G_io_apdu_buffer[4]] = '\0';
+                    os_memmove(&amount, G_io_apdu_buffer + 5, G_io_apdu_buffer[4] + 1);
+                
+                    THROW(0x9000);
+                } break;
 
-		case INS_SIGN: {
+                case INS_SIGN: {
                     if ((G_io_apdu_buffer[2] != P1_MORE) &&
                         (G_io_apdu_buffer[2] != P1_LAST)) {
                         THROW(0x6A86);
@@ -624,10 +624,10 @@ static void sample_main(void) {
 
                     flags |= IO_ASYNCH_REPLY;
                 } break;
-	        case INS_DRAW_FROM_ADDRESS: {
-		ui_approval();
-		
-		} break;
+                case INS_DRAW_FROM_ADDRESS: {
+                ui_approval();
+                
+                } break;
 
                 case INS_GET_PUBLIC_KEY: {
                     cx_ecfp_public_key_t publicKey;
