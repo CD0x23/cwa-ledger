@@ -41,8 +41,8 @@ def send_to_ledger(instruction_code, data):
     return response      
 
 
-textToSign = "hello"
-amount = "10.3678542"
+textToSign = "textToSign87ry923y7r7h9dj0ke"
+amount = "20.3678542"
 currency = "BTC"
 
 dongle = getDongle(True)

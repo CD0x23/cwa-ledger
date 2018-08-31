@@ -77,9 +77,6 @@ static char currency[1024];
 #define COLOR_APP 0x0ebdcf
 #define COLOR_APP_LIGHT 0x87dee6
 
-#if defined(TARGET_BLUE)
-
-
 // UI to approve or deny the signature proposal
 static const bagl_element_t const bagl_ui_approval_blue[] = {
     // {
@@ -268,231 +265,6 @@ bagl_ui_text_button(unsigned int button_mask,
                     unsigned int button_mask_counter) {
     return 0;
 }
-
-#else
-
-static const bagl_element_t bagl_ui_idle_nanos[] = {
-    // {
-    //     {type, userid, x, y, width, height, stroke, radius, fill, fgcolor,
-    //      bgcolor, font_id, icon_id},
-    //     text,
-    //     touch_area_brim,
-    //     overfgcolor,
-    //     overbgcolor,
-    //     tap,
-    //     out,
-    //     over,
-    // },
-    {
-        {BAGL_RECTANGLE, 0x00, 0, 0, 128, 32, 0, 0, BAGL_FILL, 0x000000,
-         0xFFFFFF, 0, 0},
-        NULL,
-        0,
-        0,
-        0,
-        NULL,
-        NULL,
-        NULL,
-    },
-    {
-        {BAGL_LABELINE, 0x02, 0, 12, 128, 11, 0, 0, 0, 0xFFFFFF, 0x000000,
-         BAGL_FONT_OPEN_SANS_REGULAR_11px | BAGL_FONT_ALIGNMENT_CENTER, 0},
-        "Islem bekleniyor",
-        0,
-        0,
-        0,
-        NULL,
-        NULL,
-        NULL,
-    },
-    {
-        {BAGL_ICON, 0x00, 3, 12, 7, 7, 0, 0, 0, 0xFFFFFF, 0x000000, 0,
-         BAGL_GLYPH_ICON_CROSS},
-        NULL,
-        0,
-        0,
-        0,
-        NULL,
-        NULL,
-        NULL,
-    },
-};
-
-static unsigned int
-bagl_ui_idle_nanos_button(unsigned int button_mask,
-                          unsigned int button_mask_counter) {
-    switch (button_mask) {
-    case BUTTON_EVT_RELEASED | BUTTON_LEFT:
-    case BUTTON_EVT_RELEASED | BUTTON_LEFT | BUTTON_RIGHT:
-        io_seproxyhal_touch_exit(NULL);
-        break;
-    }
-
-    return 0;
-}
-
-static const bagl_element_t bagl_ui_approval_nanos[] = {
-    // {
-    //     {type, userid, x, y, width, height, stroke, radius, fill, fgcolor,
-    //      bgcolor, font_id, icon_id},
-    //     text,
-    //     touch_area_brim,
-    //     overfgcolor,
-    //     overbgcolor,
-    //     tap,
-    //     out,
-    //     over,
-    // },
-    {
-        {BAGL_RECTANGLE, 0x00, 0, 0, 128, 32, 0, 0, BAGL_FILL, 0x000000,
-         0xFFFFFF, 0, 0},
-        NULL,
-        0,
-        0,
-        0,
-        NULL,
-        NULL,
-        NULL,
-    },
-    {
-        {BAGL_LABELINE, 0x02, 0, 12, 128, 11, 0, 0, 0, 0xFFFFFF, 0x000000,
-         BAGL_FONT_OPEN_SANS_REGULAR_11px | BAGL_FONT_ALIGNMENT_CENTER, 0},
-        "Imzala",
-        0,
-        0,
-        0,
-        NULL,
-        NULL,
-        NULL,
-    },
-    {
-        {BAGL_ICON, 0x00, 3, 12, 7, 7, 0, 0, 0, 0xFFFFFF, 0x000000, 0,
-         BAGL_GLYPH_ICON_CROSS},
-        NULL,
-        0,
-        0,
-        0,
-        NULL,
-        NULL,
-        NULL,
-    },
-    {
-        {BAGL_ICON, 0x00, 117, 13, 8, 6, 0, 0, 0, 0xFFFFFF, 0x000000, 0,
-         BAGL_GLYPH_ICON_CHECK},
-        NULL,
-        0,
-        0,
-        0,
-        NULL,
-        NULL,
-        NULL,
-    },
-};
-
-static unsigned int
-bagl_ui_approval_nanos_button(unsigned int button_mask,
-                              unsigned int button_mask_counter) {
-    switch (button_mask) {
-    case BUTTON_EVT_RELEASED | BUTTON_RIGHT:
-        io_seproxyhal_touch_approve(NULL);
-        break;
-
-    case BUTTON_EVT_RELEASED | BUTTON_LEFT:
-        io_seproxyhal_touch_deny(NULL);
-        break;
-    }
-    return 0;
-}
-
-static const bagl_element_t bagl_ui_text_review_nanos[] = {
-    // {
-    //     {type, userid, x, y, width, height, stroke, radius, fill, fgcolor,
-    //      bgcolor, font_id, icon_id},
-    //     text,
-    //     touch_area_brim,
-    //     overfgcolor,
-    //     overbgcolor,
-    //     tap,
-    //     out,
-    //     over,
-    // },
-    {
-        {BAGL_RECTANGLE, 0x00, 0, 0, 128, 32, 0, 0, BAGL_FILL, 0x000000,
-         0xFFFFFF, 0, 0},
-        NULL,
-        0,
-        0,
-        0,
-        NULL,
-        NULL,
-        NULL,
-    },
-    {
-        {BAGL_LABELINE, 0x02, 0, 12, 128, 11, 0, 0, 0, 0xFFFFFF, 0x000000,
-         BAGL_FONT_OPEN_SANS_REGULAR_11px | BAGL_FONT_ALIGNMENT_CENTER, 0},
-        "Mesaji onayla",
-        0,
-        0,
-        0,
-        NULL,
-        NULL,
-        NULL,
-    },
-    {
-        {BAGL_LABELINE, 0x02, 23, 26, 82, 11, 0x80 | 10, 0, 0, 0xFFFFFF,
-         0x000000, BAGL_FONT_OPEN_SANS_EXTRABOLD_11px | BAGL_FONT_ALIGNMENT_CENTER, 26},
-        lineBuffer,
-        0,
-        0,
-        0,
-        NULL,
-        NULL,
-        NULL,
-    },
-    {
-        {BAGL_ICON, 0x00, 3, 12, 7, 7, 0, 0, 0, 0xFFFFFF, 0x000000, 0,
-         BAGL_GLYPH_ICON_CROSS},
-        NULL,
-        0,
-        0,
-        0,
-        NULL,
-        NULL,
-        NULL,
-    },
-    {
-        {BAGL_ICON, 0x00, 117, 13, 8, 6, 0, 0, 0, 0xFFFFFF, 0x000000, 0,
-         BAGL_GLYPH_ICON_CHECK},
-        NULL,
-        0,
-        0,
-        0,
-        NULL,
-        NULL,
-        NULL,
-    },
-};
-
-static unsigned int
-bagl_ui_text_review_nanos_button(unsigned int button_mask,
-                                 unsigned int button_mask_counter) {
-    switch (button_mask) {
-    case BUTTON_EVT_RELEASED | BUTTON_RIGHT:
-        if (!display_text_part()) {
-            ui_approval();
-        } else {
-            UX_REDISPLAY();
-        }
-        break;
-
-    case BUTTON_EVT_RELEASED | BUTTON_LEFT:
-        io_seproxyhal_touch_deny(NULL);
-        break;
-    }
-    return 0;
-}
-
-#endif
 
 static const bagl_element_t *io_seproxyhal_touch_exit(const bagl_element_t *e) {
     // Go back to the dashboard
@@ -700,7 +472,7 @@ static unsigned char display_text_part() {
         current_text_pos++;
     }
     lineBuffer[i] = '\0';
-#ifdef TARGET_BLUE
+
     os_memset(bagl_ui_text, 0, sizeof(bagl_ui_text));
     bagl_ui_text[0].component.type = BAGL_LABEL;
     bagl_ui_text[0].component.x = 4;
@@ -713,35 +485,23 @@ static unsigned char display_text_part() {
     bagl_ui_text[0].component.font_id = DEFAULT_FONT;
     bagl_ui_text[0].text = lineBuffer;
     text_y += TEXT_HEIGHT + TEXT_SPACE;
-#endif
+
     return 1;
 }
 
 static void ui_idle(void) {
     uiState = UI_IDLE;
-#ifdef TARGET_BLUE
     UX_DISPLAY(bagl_ui_idle_blue, NULL);
-#else
-    UX_DISPLAY(bagl_ui_idle_nanos, NULL);
-#endif
 }
 
 static void ui_text(void) {
     uiState = UI_TEXT;
-#ifdef TARGET_BLUE
     UX_DISPLAY(bagl_ui_text, NULL);
-#else
-    UX_DISPLAY(bagl_ui_text_review_nanos, NULL);
-#endif
 }
 
 static void ui_approval(void) {
     uiState = UI_APPROVAL;
-#ifdef TARGET_BLUE
     UX_DISPLAY(bagl_ui_approval_blue, NULL);
-#else
-    UX_DISPLAY(bagl_ui_approval_nanos, NULL);
-#endif
 }
 
 unsigned char io_event(unsigned char channel) {
@@ -752,10 +512,6 @@ unsigned char io_event(unsigned char channel) {
     switch (G_io_seproxyhal_spi_buffer[0]) {
     case SEPROXYHAL_TAG_FINGER_EVENT:
         UX_FINGER_EVENT(G_io_seproxyhal_spi_buffer);
-        break;
-
-    case SEPROXYHAL_TAG_BUTTON_PUSH_EVENT: // for Nano S
-        UX_BUTTON_PUSH_EVENT(G_io_seproxyhal_spi_buffer);
         break;
 
     case SEPROXYHAL_TAG_DISPLAY_PROCESSED_EVENT:
@@ -773,14 +529,6 @@ unsigned char io_event(unsigned char channel) {
         break;
 
     case SEPROXYHAL_TAG_TICKER_EVENT:
-        #ifdef TARGET_NANOS
-            UX_TICKER_EVENT(G_io_seproxyhal_spi_buffer, {
-                // defaulty retrig very soon (will be overriden during
-                // stepper_prepro)
-                UX_CALLBACK_SET_INTERVAL(500);
-                UX_REDISPLAY();
-            });
-        #endif 
         break;
 
     // unknown events are acknowledged
