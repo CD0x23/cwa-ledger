@@ -19,9 +19,14 @@ from ledgerblue.comm import getDongle
 from ledgerblue.commException import CommException
 from secp256k1 import PublicKey
 
-INS_SIGN         = "02"
-INS_SET_AMOUNT   = "10"
-INS_SET_CURRENCY = "11"
+INS_SIGN            = "02"
+INS_SET_TRANSFER_ID = "11"
+INS_SET_DATE        = "12"
+INS_SET_CURRENCY    = "13"
+INS_SET_AMOUNT      = "14"
+INS_SET_COLD_WALLET = "15"
+INS_SET_HOT_WALLET  = "16"
+
 
 def send_to_ledger(instruction_code, data):
     offset = 0
@@ -42,15 +47,17 @@ def send_to_ledger(instruction_code, data):
 
 
 textToSign = "textToSign87ry923y7r7h9dj0ke"
-amount = "20.3678542"
-currency = "BTC"
 
 dongle = getDongle(True)
 publicKey = dongle.exchange(bytes("8004000000".decode('hex')))
 print "publicKey " + str(publicKey).encode('hex')
 try:
-    send_to_ledger(INS_SET_AMOUNT, amount)
-    send_to_ledger(INS_SET_CURRENCY, currency)
+    send_to_ledger(INS_SET_TRANSFER_ID, "t234567189512")
+    send_to_ledger(INS_SET_DATE, "26 Agustos 2018 15:38")
+    send_to_ledger(INS_SET_CURRENCY, "BTC")
+    send_to_ledger(INS_SET_AMOUNT, "631.5132")
+    send_to_ledger(INS_SET_COLD_WALLET, "3B4oStNceDPrQBEyeKbG7yEwmPgBKMwbBd")
+    send_to_ledger(INS_SET_HOT_WALLET, "1Hzh3CEJT8ZA1Yw5JdpyoDdnLmyJomBhNf")
     signature = send_to_ledger(INS_SIGN, textToSign)
     print "signature " + str(signature).encode('hex')
     publicKey = PublicKey(bytes(publicKey), raw=True)

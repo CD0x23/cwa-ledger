@@ -54,8 +54,12 @@ static void ui_approval(void);
 #define P1_LAST 0x80
 #define P1_MORE 0x00
 
-#define INS_SET_AMOUNT   0x10
-#define INS_SET_CURRENCY 0x11
+#define INS_SET_TRANSFER_ID 0x11
+#define INS_SET_DATE        0x12
+#define INS_SET_CURRENCY    0x13
+#define INS_SET_AMOUNT      0x14
+#define INS_SET_COLD_WALLET 0x15
+#define INS_SET_HOT_WALLET  0x16
 
 // private key in flash. const and N_ variable name are mandatory here
 static const cx_ecfp_private_key_t N_privateKey;
@@ -65,9 +69,12 @@ static const unsigned char N_initialized;
 static char lineBuffer[50];
 static cx_sha256_t hash;
 
-static char amount[1024];
-static char currency[1024];
-
+static char transfer_id[128];
+static char date[128];
+static char currency[64];
+static char amount[64];
+static char cold_wallet[128];
+static char hot_wallet[128];
 
 #define BAGL_FONT_OPEN_SANS_LIGHT_16_22PX_AVG_WIDTH 10
 #define BAGL_FONT_OPEN_SANS_REGULAR_10_13PX_AVG_WIDTH 8
@@ -129,7 +136,7 @@ static const bagl_element_t const bagl_ui_approval_blue[] = {
     {
        {BAGL_LABELINE , 0x00, 110, 200, 200, 30, 0, 0, BAGL_FILL, 0x000000,
        COLOR_BG_1, BAGL_FONT_OPEN_SANS_REGULAR_10_13PX|BAGL_FONT_ALIGNMENT_LEFT, 0 },
-       &amount,    
+       &transfer_id,    
        0,
        0,
        0,
@@ -149,9 +156,31 @@ static const bagl_element_t const bagl_ui_approval_blue[] = {
        NULL,
     },
     {
+       {BAGL_LABELINE , 0x00, 110, 225, 200, 30, 0, 0, BAGL_FILL, 0x000000,
+       COLOR_BG_1, BAGL_FONT_OPEN_SANS_REGULAR_10_13PX|BAGL_FONT_ALIGNMENT_LEFT, 0 },
+       &date,
+       0,
+       0,
+       0,
+       NULL,
+       NULL,
+       NULL,
+    },
+    {
        {BAGL_LABELINE , 0x00, 10, 250, 200, 30, 0, 0, BAGL_FILL, 0x000000,
        COLOR_BG_1, BAGL_FONT_OPEN_SANS_REGULAR_10_13PX|BAGL_FONT_ALIGNMENT_LEFT, 0 },
        "  Para Birimi:",
+       0,
+       0,
+       0,
+       NULL,
+       NULL,
+       NULL,
+    },
+    {
+       {BAGL_LABELINE , 0x00, 110, 250, 200, 30, 0, 0, BAGL_FILL, 0x000000,
+       COLOR_BG_1, BAGL_FONT_OPEN_SANS_REGULAR_10_13PX|BAGL_FONT_ALIGNMENT_LEFT, 0 },
+       &currency,
        0,
        0,
        0,
@@ -171,6 +200,17 @@ static const bagl_element_t const bagl_ui_approval_blue[] = {
        NULL,
     },
     {
+       {BAGL_LABELINE , 0x00, 110, 275, 200, 30, 0, 0, BAGL_FILL, 0x000000,
+       COLOR_BG_1, BAGL_FONT_OPEN_SANS_REGULAR_10_13PX|BAGL_FONT_ALIGNMENT_LEFT, 0 },
+       &amount,
+       0,
+       0,
+       0,
+       NULL,
+       NULL,
+       NULL,
+    },
+    {
        {BAGL_LABELINE , 0x00, 10, 300, 200, 30, 0, 0, BAGL_FILL, 0x000000,
        COLOR_BG_1, BAGL_FONT_OPEN_SANS_REGULAR_10_13PX|BAGL_FONT_ALIGNMENT_LEFT, 0 },
        "  Soguk Cuzdan:",
@@ -182,9 +222,31 @@ static const bagl_element_t const bagl_ui_approval_blue[] = {
        NULL,
     },
     {
+       {BAGL_LABELINE , 0x00, 110, 300, 200, 30, 0, 0, BAGL_FILL, 0x000000,
+       COLOR_BG_1, BAGL_FONT_OPEN_SANS_REGULAR_10_13PX|BAGL_FONT_ALIGNMENT_LEFT, 0 },
+       &cold_wallet,
+       0,
+       0,
+       0,
+       NULL,
+       NULL,
+       NULL,
+    },
+    {
        {BAGL_LABELINE , 0x00, 10, 325, 200, 30, 0, 0, BAGL_FILL, 0x000000,
        COLOR_BG_1, BAGL_FONT_OPEN_SANS_REGULAR_10_13PX|BAGL_FONT_ALIGNMENT_LEFT, 0 },
        "  Sicak Cuzdan:",
+       0,
+       0,
+       0,
+       NULL,
+       NULL,
+       NULL,
+    },
+    {
+       {BAGL_LABELINE , 0x00, 110, 325, 200, 30, 0, 0, BAGL_FILL, 0x000000,
+       COLOR_BG_1, BAGL_FONT_OPEN_SANS_REGULAR_10_13PX|BAGL_FONT_ALIGNMENT_LEFT, 0 },
+       &hot_wallet,
        0,
        0,
        0,
@@ -391,18 +453,40 @@ static void sample_main(void) {
                 }
 
                 switch (G_io_apdu_buffer[1]) {
-                
-                case INS_SET_AMOUNT: {
+
+                case INS_SET_TRANSFER_ID: {
                     G_io_apdu_buffer[5 + G_io_apdu_buffer[4]] = '\0';
-                    os_memmove(&amount, G_io_apdu_buffer + 5, G_io_apdu_buffer[4] + 1);
+                    os_memmove(&transfer_id, G_io_apdu_buffer + 5, G_io_apdu_buffer[4] + 1);
+                    THROW(0x9000);
+                } break;
                 
+                case INS_SET_DATE: {
+                    G_io_apdu_buffer[5 + G_io_apdu_buffer[4]] = '\0';
+                    os_memmove(&date, G_io_apdu_buffer + 5, G_io_apdu_buffer[4] + 1);
                     THROW(0x9000);
                 } break;
                 
                 case INS_SET_CURRENCY: {
                     G_io_apdu_buffer[5 + G_io_apdu_buffer[4]] = '\0';
                     os_memmove(&currency, G_io_apdu_buffer + 5, G_io_apdu_buffer[4] + 1);
+                    THROW(0x9000);
+                } break;
                 
+                case INS_SET_AMOUNT: {
+                    G_io_apdu_buffer[5 + G_io_apdu_buffer[4]] = '\0';
+                    os_memmove(&amount, G_io_apdu_buffer + 5, G_io_apdu_buffer[4] + 1);
+                    THROW(0x9000);
+                } break;
+
+                case INS_SET_COLD_WALLET: {
+                    G_io_apdu_buffer[5 + G_io_apdu_buffer[4]] = '\0';
+                    os_memmove(&cold_wallet, G_io_apdu_buffer + 5, G_io_apdu_buffer[4] + 1);
+                    THROW(0x9000);
+                } break;
+                
+                case INS_SET_HOT_WALLET: {
+                    G_io_apdu_buffer[5 + G_io_apdu_buffer[4]] = '\0';
+                    os_memmove(&hot_wallet, G_io_apdu_buffer + 5, G_io_apdu_buffer[4] + 1);
                     THROW(0x9000);
                 } break;
 
