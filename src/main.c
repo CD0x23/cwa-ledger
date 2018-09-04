@@ -123,6 +123,18 @@ static const bagl_element_t const bagl_ui_approval_blue[] = {
         NULL,
     },
     {
+       {BAGL_LABELINE , 0x00, 10, 130, 200, 30, 0, 0, BAGL_FILL, 0x000000,
+       COLOR_BG_1, BAGL_FONT_OPEN_SANS_LIGHT_16_22PX|BAGL_FONT_ALIGNMENT_LEFT, 0 },
+        "Transfer detaylari:",
+       0,
+       0,
+       0,
+       NULL,
+       NULL,
+       NULL,
+    },
+
+    {
        {BAGL_LABELINE , 0x00, 10, 200, 200, 30, 0, 0, BAGL_FILL, 0x000000,
        COLOR_BG_1, BAGL_FONT_OPEN_SANS_REGULAR_10_13PX|BAGL_FONT_ALIGNMENT_LEFT, 0 },
        "  Transfer ID:",
@@ -299,7 +311,7 @@ static const bagl_element_t bagl_ui_idle_blue[] = {
     {
         {BAGL_LABEL, 0x00, 20, 0, 320, 60, 0, 0, BAGL_FILL, 0xFFFFFF, 0x1d2028,
          BAGL_FONT_OPEN_SANS_LIGHT_14px | BAGL_FONT_ALIGNMENT_MIDDLE, 0},
-        "Imza uygulamasi",
+        "Aktif Bank Cold Wallet Authenticator",
         0,
         0,
         0,
