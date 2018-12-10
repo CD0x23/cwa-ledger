@@ -1,4 +1,4 @@
-# Sample Signature App for Ledger Blue & Ledger Nano S
+# Signature App for Ledger Blue & Ledger Nano S
 
 This application demonstrates a more complex user interface, the Secure Element
 proxy logic, cryptographic APIs and flash storage.
